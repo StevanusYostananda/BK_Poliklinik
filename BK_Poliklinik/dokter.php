@@ -27,17 +27,17 @@ if (!isset($_SESSION['user_id'])) {
         <form class="form row" method="POST" action="" name="myForm" onsubmit="return(validate());">
             <!-- Kode php untuk menghubungkan form dengan database -->
             <?php
-            $nama_obat = '';
-            $kemasan = '';
-            $harga = '';
+            $nama = '';
+            $alamat = '';
+            $no_hp = '';
             if (isset($_GET['id'])) {
                 $ambil = mysqli_query($mysqli, 
-                "SELECT * FROM obat 
+                "SELECT * FROM dokter 
                 WHERE id='" . $_GET['id'] . "'");
                 while ($row = mysqli_fetch_array($ambil)) {
-                    $nama_obat = $row['nama_obat'];
-                    $kemasan = $row['kemasan'];
-                    $harga = $row['harga'];
+                    $nama = $row['nama'];
+                    $alamat = $row['alamat'];
+                    $no_hp = $row['no_hp'];
                 }
             ?>
                 <input type="hidden" name="id" value="<?php echo
@@ -46,22 +46,22 @@ if (!isset($_SESSION['user_id'])) {
             }
             ?>
             <div class="form-group">
-                <label for="inputobat" class="form-label fw-bold">
-                    Obat
+                <label for="inputnama" class="form-label fw-bold">
+                    Nama
                 </label>
-                <input type="text" class="form-control" name="nama_obat" id="inputobat" placeholder="nama_obat" value="<?php echo $nama_obat ?>">
+                <input type="text" class="form-control" name="nama" id="inputnama" placeholder="nama" value="<?php echo $nama ?>">
             </div>
             <div class="form-group">
-                <label for="inputkemasan" class="form-label fw-bold">
-                    Kemasan
+                <label for="inputalamat" class="form-label fw-bold">
+                    Alamat
                 </label>
-                <input type="text" class="form-control" name="kemasan" id="inputkemasan" placeholder="kemasan" value="<?php echo $kemasan ?>">
+                <input type="text" class="form-control" name="alamat" id="inputalamat" placeholder="alamat" value="<?php echo $alamat ?>">
             </div>
             <div class="form-group">
-                <label for="inputharga" class="form-label fw-bold">
-                    Harga
+                <label for="inputnohp" class="form-label fw-bold">
+                    No Hp
                 </label>
-                <input type="text" class="form-control" name="harga" id="inputharga" placeholder="harga" value="<?php echo $harga ?>">
+                <input type="text" class="form-control" name="no_hp" id="inputnohp" placeholder="no_hp" value="<?php echo $no_hp ?>">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary rounded-pill px-3" name="simpan">Simpan</button>
@@ -74,9 +74,9 @@ if (!isset($_SESSION['user_id'])) {
         <thead>
             <tr>
                 <th scope="col" style="text-align: center; vertical-align: middle;">No</th>
-                <th scope="col" style="text-align: center; vertical-align: middle;">Obat</th>
-                <th scope="col" style="text-align: center; vertical-align: middle;">Kemasan</th>
-                <th scope="col" style="text-align: center; vertical-align: middle;">Harga</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">Nama</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">Alamat</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">Ho Hp</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Aksi</th>
             </tr>
         </thead>
@@ -85,18 +85,18 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Kode PHP untuk menampilkan semua isi dari tabel urut
             berdasarkan status dan tanggal awal-->
             <?php
-            $result = mysqli_query($mysqli, "SELECT * FROM obat");
+            $result = mysqli_query($mysqli, "SELECT * FROM dokter");
             $no = 1;
             while ($data = mysqli_fetch_array($result)) {
             ?>
                 <tr>
                     <td class="text-center align-middle"><?php echo $no++ ?></td>
-                    <td class="text-center align-middle"><?php echo $data['nama_obat'] ?></td>
-                    <td class="text-center align-middle"><?php echo $data['kemasan'] ?></td>
-                    <td class="text-center align-middle"><?php echo $data['harga'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['nama'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['alamat'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['no_hp'] ?></td>
                     <td class="text-center align-middle">
-                        <a class="btn btn-success rounded-pill px-3" href="index.php?page=obat&id=<?php echo $data['id'] ?>">Ubah</a>
-                        <a class="btn btn-danger rounded-pill px-3" href="index.php?page=obat&id=<?php echo $data['id'] ?>&aksi=hapus">Hapus</a>
+                        <a class="btn btn-success rounded-pill px-3" href="index.php?page=dokter&id=<?php echo $data['id'] ?>">Ubah</a>
+                        <a class="btn btn-danger rounded-pill px-3" href="index.php?page=dokter&id=<?php echo $data['id'] ?>&aksi=hapus">Hapus</a>
                     </td>
                 </tr>
             <?php
@@ -108,38 +108,38 @@ if (!isset($_SESSION['user_id'])) {
         <?php
     if (isset($_POST['simpan'])) {
         if (isset($_POST['id'])) {
-            $ubah = mysqli_query($mysqli, "UPDATE obat SET 
-                                            nama_obat = '" . $_POST['nama_obat'] . "',
-                                            kemasan = '" . $_POST['kemasan'] . "',
-                                            harga = '" . $_POST['harga'] . "'
+            $ubah = mysqli_query($mysqli, "UPDATE dokter SET 
+                                            nama = '" . $_POST['nama'] . "',
+                                            alamat = '" . $_POST['alamat'] . "',
+                                            no_hp = '" . $_POST['no_hp'] . "'
                                             WHERE
                                             id = '" . $_POST['id'] . "'");
         } else {
-            $tambah = mysqli_query($mysqli, "INSERT INTO obat(nama_obat,kemasan,harga) 
+            $tambah = mysqli_query($mysqli, "INSERT INTO dokter(nama,alamat,no_hp) 
                                             VALUES ( 
-                                                '" . $_POST['nama_obat'] . "',
-                                                '" . $_POST['kemasan'] . "',
-                                                '" . $_POST['harga'] . "'
+                                                '" . $_POST['nama'] . "',
+                                                '" . $_POST['alamat'] . "',
+                                                '" . $_POST['no_hp'] . "'
                                                 )");
         }
 
         echo "<script> 
-                document.location='index.php?page=obat';
+                document.location='index.php?page=dokter';
                 </script>";
     }
 
     if (isset($_GET['aksi'])) {
         if ($_GET['aksi'] == 'hapus') {
-            $hapus = mysqli_query($mysqli, "DELETE FROM obat WHERE id = '" . $_GET['id'] . "'");
+            $hapus = mysqli_query($mysqli, "DELETE FROM dokter WHERE id = '" . $_GET['id'] . "'");
         } else if ($_GET['aksi'] == 'ubah_status') {
-            $ubah_status = mysqli_query($mysqli, "UPDATE obat SET 
+            $ubah_status = mysqli_query($mysqli, "UPDATE dokter SET 
                                             status = '" . $_GET['status'] . "' 
                                             WHERE
                                             id = '" . $_GET['id'] . "'");
         }
 
         echo "<script> 
-                document.location='index.php?page=obat';
+                document.location='index.php?page=dokter';
                 </script>";
     }
     ?>

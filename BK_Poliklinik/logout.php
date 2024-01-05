@@ -1,11 +1,6 @@
 <?php
-session_start();
-if (isset($_SESSION['username'])) {
-    // Hapus session
-    session_unset();
+    session_start();
     session_destroy();
-}
-
-header("Location: index.php?page=loginUser");
-exit();
+    echo "Logout berhasil. Anda akan diarahkan ke halaman login...";
 ?>
+<script>document.location='index.php?page=login_pasien'</script>
