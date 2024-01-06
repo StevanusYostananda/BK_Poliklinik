@@ -30,6 +30,7 @@ if (!isset($_SESSION['user_id'])) {
             $nama = '';
             $alamat = '';
             $no_hp = '';
+            $id_poli = '';
             if (isset($_GET['id'])) {
                 $ambil = mysqli_query($mysqli, 
                 "SELECT * FROM dokter 
@@ -38,6 +39,7 @@ if (!isset($_SESSION['user_id'])) {
                     $nama = $row['nama'];
                     $alamat = $row['alamat'];
                     $no_hp = $row['no_hp'];
+                    $id_poli = $row['id_poli'];
                 }
             ?>
                 <input type="hidden" name="id" value="<?php echo
@@ -64,6 +66,12 @@ if (!isset($_SESSION['user_id'])) {
                 <input type="text" class="form-control" name="no_hp" id="inputnohp" placeholder="no_hp" value="<?php echo $no_hp ?>">
             </div>
             <div class="form-group">
+                <label for="inputidpoli" class="form-label fw-bold">
+                    ID Poli
+                </label>
+                <input type="text" class="form-control" name="id_poli" id="inputidpoli" placeholder="id_poli" value="<?php echo $id_poli ?>">
+            </div>
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary rounded-pill px-3" name="simpan">Simpan</button>
             </div>
         </form>
@@ -77,6 +85,7 @@ if (!isset($_SESSION['user_id'])) {
                 <th scope="col" style="text-align: center; vertical-align: middle;">Nama</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Alamat</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Ho Hp</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">ID Poli</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Aksi</th>
             </tr>
         </thead>
@@ -94,6 +103,7 @@ if (!isset($_SESSION['user_id'])) {
                     <td class="text-center align-middle"><?php echo $data['nama'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['alamat'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['no_hp'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['id_poli'] ?></td>
                     <td class="text-center align-middle">
                         <a class="btn btn-success rounded-pill px-3" href="index.php?page=dokter&id=<?php echo $data['id'] ?>">Ubah</a>
                         <a class="btn btn-danger rounded-pill px-3" href="index.php?page=dokter&id=<?php echo $data['id'] ?>&aksi=hapus">Hapus</a>
@@ -111,15 +121,17 @@ if (!isset($_SESSION['user_id'])) {
             $ubah = mysqli_query($mysqli, "UPDATE dokter SET 
                                             nama = '" . $_POST['nama'] . "',
                                             alamat = '" . $_POST['alamat'] . "',
-                                            no_hp = '" . $_POST['no_hp'] . "'
+                                            no_hp = '" . $_POST['no_hp'] . "',
+                                            id_poli = '" . $_POST['id_poli'] . "'
                                             WHERE
                                             id = '" . $_POST['id'] . "'");
         } else {
-            $tambah = mysqli_query($mysqli, "INSERT INTO dokter(nama,alamat,no_hp) 
+            $tambah = mysqli_query($mysqli, "INSERT INTO dokter(nama,alamat,no_hp,id_poli) 
                                             VALUES ( 
                                                 '" . $_POST['nama'] . "',
                                                 '" . $_POST['alamat'] . "',
-                                                '" . $_POST['no_hp'] . "'
+                                                '" . $_POST['no_hp'] . "',
+                                                '" . $_POST['id_poli'] . "'
                                                 )");
         }
 

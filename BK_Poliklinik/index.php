@@ -59,7 +59,7 @@ include_once("koneksi.php");
         </li>
             <?php
             session_start();
-        if (isset($_SESSION['user_id']) && $_SESSION['user_id'] === true) {
+        if (isset($_SESSION['pasien_id']) && $_SESSION['pasien_id'] === true) {
             // Jika pengguna sudah login, tampilkan tautan "Logout"
             echo '<li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>';
         } else {

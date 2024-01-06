@@ -24,9 +24,8 @@ if (!isset($_SESSION['user_id'])) {
     <?php
             $catatan = '';
             $tgl_periksa = '';
-            $id_dokter = '';
-            $id_pasien = '';
-            $biaya = '';
+            $id_daftar_poli = '';
+            $biaya_periksa = '';
             if (isset($_GET['id'])) {
                 $ambil = mysqli_query($mysqli, 
                 "SELECT * FROM periksa 
@@ -34,9 +33,8 @@ if (!isset($_SESSION['user_id'])) {
                 while ($row = mysqli_fetch_array($ambil)) {
                     $catatan = $row['catatan'];
                     $tgl_periksa = $row['tgl_periksa'];
-                    $id_dokter = $row['id_dokter'];
-                    $id_pasien = $row['id_pasien'];
-                    $biaya = $row['biaya_periksa'];
+                    $id_daftar_poli = $row['id_daftar_poli'];
+                    $biaya_periksa = $row['biaya_periksa'];
                 }
             ?>
                 <input type="hidden" name="id" value="<?php echo
@@ -44,43 +42,11 @@ if (!isset($_SESSION['user_id'])) {
             <?php
             }?>
 
-<div class="form-group mx-sm-3 mb-2">
-        <label for="inputPasien" class="sr-only fw-bold">Pasien</label>
-        <select class="form-control" name="id_pasien">
-            <?php
-            $selected = '';
-            $pasien = mysqli_query($mysqli, "SELECT * FROM pasien");
-            while ($data = mysqli_fetch_array($pasien)) {
-                if ($data['id'] == $id_pasien) {
-                    $selected = 'selected="selected"';
-                } else {
-                    $selected = '';
-                }
-            ?>
-                <option value="<?php echo $data['id'] ?>" <?php echo $selected ?>><?php echo $data['nama'] ?></option>
-            <?php
-            }
-            ?>
-        </select>
-    </div>
     <div class="form-group mx-sm-3 mb-2">
-        <label for="inputDokter" class="sr-only fw-bold">Dokter</label>
-        <select class="form-control" name="id_dokter">
-            <?php
-            $selected = '';
-            $dokter = mysqli_query($mysqli, "SELECT * FROM dokter");
-            while ($data = mysqli_fetch_array($dokter)) {
-                if ($data['id'] == $id_dokter) {
-                    $selected = 'selected="selected"';
-                } else {
-                    $selected = '';
-                }
-            ?>
-                <option value="<?php echo $data['id'] ?>" <?php echo $selected ?>><?php echo $data['nama'] ?></option>
-            <?php
-            }
-            ?>
-        </select>
+        <label for="iddaftarpoli" class="form-label fw-bold">
+            ID Daftar Poli
+        </label>
+        <input type="text" class="form-control" name="id_daftar_poli" id="iddaftarpoli" placeholder="id_daftar_poli" value="<?php echo $id_daftar_poli ?>">
     </div>
     <div class="form-group mx-sm-3 mb-2">
         <label for="inputtanggal" class="form-label fw-bold">
@@ -96,9 +62,9 @@ if (!isset($_SESSION['user_id'])) {
     </div>
     <div class="form-group mx-sm-3 mb-2">
         <label for="inputbiaya" class="form-label fw-bold">
-            Biaya Jasa
+            Biaya Dokter
         </label>
-        <input type="text" class="form-control" name="biaya_periksa" id="inputbiaya" placeholder="biaya_periksa" value="<?php echo $biaya ?>">
+        <input type="text" class="form-control" name="biaya_periksa" id="inputbiaya" placeholder="biaya_periksa" value="<?php echo $biaya_periksa ?>">
     </div>
     <div class="form-group mx-sm-3 mb-2">
         <button type="submit" class="btn btn-primary rounded-pill px-3" name="simpan">Simpan</button>
@@ -110,8 +76,7 @@ if (!isset($_SESSION['user_id'])) {
         <thead>
             <tr>
                 <th scope="col" style="text-align: center; vertical-align: middle;">No</th>
-                <th scope="col" style="text-align: center; vertical-align: middle;">Pasien</th>
-                <th scope="col" style="text-align: center; vertical-align: middle;">Dokter</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">ID Daftar Poli</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Tanggal Periksa</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Catatan</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Biaya Jasa</th>
@@ -123,14 +88,13 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Kode PHP untuk menampilkan semua isi dari tabel urut
             berdasarkan status dan tanggal awal-->
             <?php
-            $result = mysqli_query($mysqli, "SELECT pr.*,d.nama as 'nama_dokter', p.nama as 'nama_pasien' FROM periksa pr LEFT JOIN dokter d ON (pr.id_dokter=d.id) LEFT JOIN pasien p ON (pr.id_pasien=p.id) ORDER BY pr.tgl_periksa DESC");
+            $result = mysqli_query($mysqli, "SELECT * FROM periksa");
             $no = 1;
             while ($data = mysqli_fetch_array($result)) {
             ?>
                 <tr>
                     <td class="text-center align-middle"><?php echo $no++ ?></td>
-                    <td class="text-center align-middle"><?php echo $data['nama_pasien'] ?></td>
-                    <td class="text-center align-middle"><?php echo $data['nama_dokter'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['id_daftar_poli'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['tgl_periksa'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['catatan'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['biaya_periksa'] ?></td>
@@ -150,18 +114,16 @@ if (!isset($_SESSION['user_id'])) {
     if (isset($_POST['simpan'])) {
         if (isset($_POST['id'])) {
             $ubah = mysqli_query($mysqli, "UPDATE periksa SET 
-                                            id_pasien = '" . $_POST['id_pasien'] . "',
-                                            id_dokter = '" . $_POST['id_dokter'] . "',
+                                            id_daftar_poli = '" . $_POST['id_daftar_poli'] . "',
                                             tgl_periksa = '" . $_POST['tgl_periksa'] . "',
                                             catatan = '" . $_POST['catatan'] . "',
                                             biaya_periksa = '" . $_POST['biaya_periksa'] . "'
                                             WHERE
                                             id = '" . $_POST['id'] . "'");
         } else {
-            $tambah = mysqli_query($mysqli, "INSERT INTO periksa(id_pasien,id_dokter,tgl_periksa,catatan,biaya_periksa) 
+            $tambah = mysqli_query($mysqli, "INSERT INTO periksa(id_daftar_poli,tgl_periksa,catatan,biaya_periksa) 
                                             VALUES ( 
-                                                '" . $_POST['id_pasien'] . "',
-                                                '" . $_POST['id_dokter'] . "',
+                                                '" . $_POST['id_daftar_poli'] . "',
                                                 '" . $_POST['tgl_periksa'] . "',
                                                 '" . $_POST['catatan'] . "',
                                                 '" . $_POST['biaya_periksa'] . "'

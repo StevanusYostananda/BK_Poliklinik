@@ -29,6 +29,8 @@ if (!isset($_SESSION['user_id'])) {
             $nama = '';
             $alamat = '';
             $no_hp = '';
+            $no_ktp = '';
+            $no_rm = '';
             if (isset($_GET['id'])) {
                 $ambil = mysqli_query($mysqli, 
                 "SELECT * FROM pasien 
@@ -37,6 +39,8 @@ if (!isset($_SESSION['user_id'])) {
                     $nama = $row['nama'];
                     $alamat = $row['alamat'];
                     $no_hp = $row['no_hp'];
+                    $no_ktp = $row['no_ktp'];
+                    $no_rm = $row['no_rm'];
                 }
             ?>
                 <input type="hidden" name="id" value="<?php echo
@@ -63,6 +67,18 @@ if (!isset($_SESSION['user_id'])) {
                 <input type="text" class="form-control" name="no_hp" id="inputnohp" placeholder="no_hp" value="<?php echo $no_hp ?>">
             </div>
             <div class="form-group">
+                <label for="inputnoktp" class="form-label fw-bold">
+                    No KTP
+                </label>
+                <input type="text" class="form-control" name="no_ktp" id="inputnoktp" placeholder="no_ktp" value="<?php echo $no_ktp ?>">
+            </div>
+            <div class="form-group">
+                <label for="inputnorm" class="form-label fw-bold">
+                    No Rekam Medis
+                </label>
+                <input type="text" class="form-control" name="no_rm" id="inputnorm" placeholder="no_rm" value="<?php echo $no_rm ?>">
+            </div>
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary rounded-pill px-3" name="simpan">Simpan</button>
             </div>
         </form>
@@ -76,6 +92,8 @@ if (!isset($_SESSION['user_id'])) {
                 <th scope="col" style="text-align: center; vertical-align: middle;">Nama</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Alamat</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">No Hp</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">No KTP</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">No Rekam Medis</th>
                 <th scope="col" style="text-align: center; vertical-align: middle;">Aksi</th>
             </tr>
         </thead>
@@ -93,6 +111,8 @@ if (!isset($_SESSION['user_id'])) {
                     <td class="text-center align-middle"><?php echo $data['nama'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['alamat'] ?></td>
                     <td class="text-center align-middle"><?php echo $data['no_hp'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['no_ktp'] ?></td>
+                    <td class="text-center align-middle"><?php echo $data['no_rm'] ?></td>
                     <td class="text-center align-middle">
                         <a class="btn btn-success rounded-pill px-3" href="index.php?page=pasien&id=<?php echo $data['id'] ?>">Ubah</a>
                         <a class="btn btn-danger rounded-pill px-3" href="index.php?page=pasien&id=<?php echo $data['id'] ?>&aksi=hapus">Hapus</a>
@@ -110,15 +130,19 @@ if (!isset($_SESSION['user_id'])) {
             $ubah = mysqli_query($mysqli, "UPDATE pasien SET 
                                             nama = '" . $_POST['nama'] . "',
                                             alamat = '" . $_POST['alamat'] . "',
-                                            no_hp = '" . $_POST['no_hp'] . "'
+                                            no_hp = '" . $_POST['no_hp'] . "',
+                                            no_hp = '" . $_POST['no_ktp'] . "',
+                                            no_hp = '" . $_POST['no_rm'] . "'
                                             WHERE
                                             id = '" . $_POST['id'] . "'");
         } else {
-            $tambah = mysqli_query($mysqli, "INSERT INTO pasien(nama,alamat,no_hp) 
+            $tambah = mysqli_query($mysqli, "INSERT INTO pasien(nama,alamat,no_hp,no_ktp,no_rm) 
                                             VALUES ( 
                                                 '" . $_POST['nama'] . "',
                                                 '" . $_POST['alamat'] . "',
-                                                '" . $_POST['no_hp'] . "'
+                                                '" . $_POST['no_hp'] . "',
+                                                '" . $_POST['no_ktp'] . "',
+                                                '" . $_POST['no_rm'] . "'
                                                 )");
         }
 

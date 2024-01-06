@@ -51,10 +51,10 @@ include_once("koneksi.php");
 
         if($result==1){
             session_start();
-            $_SESSION['user_id'] = true;
+            $_SESSION['dokter_id'] = true;
             $data = $login->fetch_assoc();
 
-            $_SESSION['user']=$data;
+            $_SESSION['dokter']=$data;
             echo "<script> 
             alert('Login Successful');
             document.location='index.php';
